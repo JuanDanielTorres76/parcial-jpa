@@ -31,7 +31,15 @@ public class PlayerController {
     public List<Player> findByCountryAndClub(@RequestParam String country,@RequestParam String club) {
 
         return playerRepository.findDistinctByCountryNameAndPlayerClubsClubName(country, club);
+
+    }
+
+    @GetMapping("/top-countries")
+    public List<String> findTopCountries() {
         
+        Integer cutoff = playerRepository.findTop5ByOrderByFifaScoreDesc().get(4).getFifaScore();
+
+        return playerRepository.findByFifaScoreGreaterThanEqualOrderByFifaScoreDescCountryNameAsc(cutoff).stream().map(player -> player.getCountry().getName()).distinct().toList();
     }
 
 }
