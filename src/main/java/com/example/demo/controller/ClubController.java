@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -19,5 +20,12 @@ public class ClubController {
     @GetMapping
     public List<Club> findAll() {
         return clubRepository.findAll();
+    }
+
+    @GetMapping("/by-match")
+    public List<Club> findByMatch(@RequestParam Long matchId) {
+
+        return clubRepository.findDistinctByPlayerClubsPlayerCountryHomeMatchesIdOrPlayerClubsPlayerCountryAwayMatchesId(matchId, matchId);
+
     }
 }
